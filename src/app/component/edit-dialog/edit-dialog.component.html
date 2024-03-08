@@ -1,0 +1,211 @@
+<div style="height: 500px; overflow: auto">
+  <div class="add-title">
+    <h2 class="primary">Update Profile</h2>
+  </div>
+  <form [formGroup]="planForm">
+    <div class="row">
+      <div class="col-12">
+      </div>
+      <div class="col-sm-6">
+        <mat-form-field>
+          <span class="customLabel">
+            First Name <span class="required">*</span></span
+          >
+          <input matInput formControlName="first_name" required />
+          <mat-error *ngIf="planForm.get('first_name')?.hasError('required')">
+            First name is required
+          </mat-error>
+          <mat-error *ngIf="planForm.get('first_name')?.hasError('minlength')">
+            {{ patternMessage.minLength + pattern.NAMEMINLENGTH }}
+          </mat-error>
+          <mat-error *ngIf="planForm.get('first_name')?.hasError('maxlength')">
+            {{ patternMessage.maxLength + pattern.NAMEMAXLENGTH }}
+          </mat-error>
+          <mat-error *ngIf="planForm.get('first_name')?.hasError('pattern')">
+            Please enter a Alphabet letter
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6">
+        <mat-form-field>
+          <span class="customLabel">
+            Last Name <span class="required">*</span>
+          </span>
+          <input matInput formControlName="last_name" required />
+          <mat-error *ngIf="planForm.get('last_name')?.hasError('required')">
+            Last name is required</mat-error
+          >
+          <mat-error *ngIf="planForm.get('last_name')?.hasError('minlength')">
+            {{ patternMessage.minLength + pattern.NAMEMINLENGTH }}
+          </mat-error>
+          <mat-error *ngIf="planForm.get('last_name')?.hasError('maxlength')">
+            {{ patternMessage.maxLength + pattern.NAMEMAXLENGTH }}
+          </mat-error>
+          <mat-error *ngIf="planForm.get('last_name')?.hasError('pattern')">
+            Please enter a Alphabet letter
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <mat-form-field>
+          <span class="customLabel">
+            Mobile Number <span class="required">*</span>
+          </span>
+          <input matInput formControlName="mob_no" required />
+          <mat-error *ngIf="planForm.get('mob_no')?.hasError('required')">
+            Mobile number required</mat-error
+          >
+          <mat-error
+            class="error-message"
+            *ngIf="planForm.get('mob_no')?.hasError('minlength')"
+          >
+            {{ patternMessage.minLength + pattern.MOBILEMIN }}
+          </mat-error>
+          <mat-error
+            class="error-message"
+            *ngIf="planForm.get('mob_no')?.hasError('maxlength')"
+          >
+            {{ patternMessage.maxLength + pattern.MOBILEMAX }}
+          </mat-error>
+          <mat-error
+            class="error-message"
+            *ngIf="planForm.get('mob_no')?.hasError('pattern')"
+          >
+            Please enter Mobile number
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6">
+        <mat-form-field>
+          <span class="customLabel">
+            Email <span class="required">*</span>
+          </span>
+          <input matInput formControlName="email" required />
+          <mat-error *ngIf="planForm.get('email')?.hasError('required')">
+            Email is required</mat-error
+          >
+          <mat-error
+            class="error-message"
+            *ngIf="planForm.get('email')?.hasError('pattern')"
+          >
+            Please enter email</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <span class="customLabel">
+          Age <span class="required">: {{ valorFinal }}</span>
+        </span>
+        <div class="col-sm-6">
+          <mat-slider
+            (input)="getComision($event)"
+            [value]="valorFinal"
+            min="0"
+            max="200"
+            step="1"
+          >
+          </mat-slider>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <mat-form-field>
+          <mat-label>Choose an country</mat-label>
+          <mat-select formControlName="country">
+            <mat-option
+              *ngFor="let country of countries"
+              [value]="country.name"
+              (click)="getSelectedCountryValue()"
+            >
+              {{ country.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row"></div>
+    <div class="row">
+      <div class="col-sm-6">
+        <mat-form-field>
+          <mat-label>Choose an state</mat-label>
+          <mat-select formControlName="state">
+            <mat-option
+              *ngFor="let state of states"
+              [value]="state.name"
+              (click)="getSelectedStateValue()"
+            >
+              {{ state.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6">
+        <mat-form-field>
+          <span class="customLabel">
+            Address <span class="required">*</span>
+          </span>
+          <input matInput formControlName="address" required />
+          <mat-error *ngIf="planForm.get('address')?.hasError('required')">
+            Address is required</mat-error
+          >
+          <mat-error *ngIf="planForm.get('address')?.hasError('minlength')">
+            {{ patternMessage.minLength + pattern.NAMEMINLENGTH }}
+          </mat-error>
+          <mat-error *ngIf="planForm.get('address')?.hasError('maxlength')">
+            {{ patternMessage.maxLength + pattern.NAMEMAXLENGTH }}
+          </mat-error>
+          <mat-error *ngIf="planForm.get('address')?.hasError('pattern')">
+            Please enterAddress
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="col-sm-8">
+      <mat-form-field class="example-chip-list" appearance="fill">
+        <mat-label>Favorite Tags</mat-label>
+        <mat-chip-list #chipList aria-label="Tag selection">
+          <mat-chip *ngFor="let tag of tags" (removed)="remove(tag)">
+            {{ tag.name }}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+          <input
+            placeholder="New Tags..."
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)"
+          />
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
+    &nbsp;
+    <div class="btn-submit">
+      <button
+        type="button"
+        status="danger"
+        (click)="onNoClick()"
+        nbButton
+        class="btn activeOutline cancel-btn"
+      >
+        Cancel</button
+      >&nbsp;
+      <button
+        type="submit"
+        [disabled]="!planForm.valid"
+        (click)="onSubmit()"
+        nbButton
+        class="btn save-btn"
+      >
+        Update
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,21 @@
+<div
+  class="container"
+  style="
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf8ziCKUmjSOqB7SmReaeBuE0HyH_0-ggxnb-8Q7M5DrBaW2KrraJNKrn5cBNY-TnodWI&usqp=CAU');
+    background-size: 100%;
+  "
+>
+  <app-header></app-header>
+  <div class="content">
+    <div class="content" role="main">
+      <h2 class="looking-for">I'm looking for....</h2>
+      <div class="card-container">
+        <a class="card" target="_blank" rel="noopener" (click)="openDialog()">
+          <span style="font-size: 20px;">Register</span>
+        </a>
+      </div>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer></app-footer>
+</div>

@@ -1,0 +1,51 @@
+<div class="container" style="background-color: rgb(190, 188, 188);">
+  <app-header></app-header>&nbsp;&nbsp;
+  <div class="container1">
+    <mat-card class="example-card" style="background-color: #f2f2f2">
+      <mat-card-header>
+        <mat-card-title-group>
+          <div class="card-header">
+            <div class="image-container">
+              <img *ngIf="!selectedImage" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJQAngMBIgACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAABAUBAwYCB//EADEQAQACAQIEBAMHBQEAAAAAAAABAgMEEQUhMUESUWFxEyJSIzJigqGx0TSBkZLBJP/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD6SAAAAAAAAHfZsrhy2+7jvP5ZBrHq2O9fvUvHvV57bgAAAAAAAAAAAAAR12jrIERMzERG8z2hZ6bhe8RbUTMfgrKRoNFGCsXvzyzH+vomg148GLFG1Mda/wBmwAEfPo8GbnekRP1V5SkAKPV8PyYIm9Pnxx37whuolUcS0Xw/tcMbVn70R29QVwAAAAAAAAACfwnBGTLOW0fLTlHugL/h2P4ekxx5xuCTAAAAAADFqxaJi0bxPVkBzurwzgz2p26x7NK04zj+XHk786yqwAAAAAAAAJdLijbHSPKsOadHprePBjt51gG0AAAAAAAEHi/9J+aFKuOMW209a/VZTgAAAAAAAALfhGbxYZxTO805x7Kht02a2ny1vXt1jzgHRjxiyVy44vSd6y9gAAAAAja7UxpsUzHO88qwCt4rm+JqfBWeVI2n3QiZmZmZ6yAAAAAAAAAAzWtrWitazaZ6RAN+k1d9NblvNJ61/heYM+PPTx4p3j9kDS8MiPm1HP8ABH/VlWsViIrEREdoBkAAAEXWazHpo2nneY5VUmbLfNkm953mXQ5sNM1PDkrFo9VTq+HXxb3w73pHWO4IIdwAAAAAAAHvDitmyRjpHOf0BnBgvqMkUxxz7z2heaTSU01dqxveetp7vWm09NPjilI9585bgAAAAAAAAQNdw+uaJvi2rk/SVPatqzMWjaY6w6dC4ho41FfHSIjJHT19AUgzttvExtMdmAAAAAF5w3TRgw72j7S3OfT0VfD8PxdVWu3yx80ugAAAAAAAAAAAABU8W020/HpHLpb+Va6XNjjLitS3S0bObvWaXtW3Ws7AwAAAC14LT7PJk858P+Fmi8Nr4dHj9Y3SgAAAAAAAAAAAAFHxXH4NXM/XEWXir41Xliv6zAKsABhkB0emiI0+KI+iP2bQAAAAAAAAAAAAAQOMx/5YnyvAApgAf//Z" width="100" height="100" />
+              <img *ngIf="selectedImage" [src]="selectedImage" width="100" height="100" alt="Profile Image" />
+            </div>&nbsp;&nbsp;
+            <label for="fileInput" class="custom-file-upload">
+              Edit Photo
+            </label>
+          </div>
+          
+          <input
+            id="fileInput"
+            type="file"
+            (change)="onFileSelected($event)"
+            accept="image/*"
+            style="display: none"
+          />
+        </mat-card-title-group> </mat-card-header
+      >&nbsp;
+      <mat-card-content>
+        <p class="card-text text-center">
+          I'm {{ this.data.source._value.first_name }}
+          {{ this.data.source._value.last_name }} and I'm
+          {{ this.data.source._value.age }} years old. You can reach me at
+          {{ this.data.source._value.email }}. I live in the state of
+          {{ this.data.source._value.state }}.
+        </p>
+        <div class="text-center">I like to play :-
+        <div class="text-center">
+          <div *ngFor="let item of this.data.source._value.tags">
+            - {{ item.name }}
+          </div>
+        </div>
+      </div>
+
+        <p class="text-center" *ngIf="this.data.source._value.newsLetter">
+          And please send me the newsletter.
+        </p>
+        <button class="custom-file-upload" (click)="openDialog()">
+          Edit Profile
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
