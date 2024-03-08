@@ -1,6 +1,6 @@
 export const generalConfig = {
 pattern: {
-    'ALPHANUMERICANDSPECIALCHAR':/^[A-Z]*$/,
+    'ALPHANUMERICANDSPECIALCHAR':/^[a-zA-Z]+([',.-][a-zA-Z]+)*$/,
     'NUMERIC': /^[0-9]*$/,
     "EMAIL": /^(([^<>()\[\]\\.,,:\s@"]+(\.[^<>()\[\]\\.,,:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     "MOB_NO": /^(?!(\d)\1+$)\d{3}[-\s]?\d{3}[-\s]?\d{4}\s?$/,
