@@ -40,6 +40,8 @@ export class RegistrationFormComponent implements OnInit {
   planForm: FormGroup;
   countries: any;
   states: any;
+  addressOption: any = [];
+  selectedAddress: string = "";
   selectedImage: string | ArrayBuffer | null = null;
   invalidImageSize: boolean = false;
   fileimage: any;
@@ -86,6 +88,10 @@ export class RegistrationFormComponent implements OnInit {
       address: new FormControl({ value: '', disabled: false }, [
         Validators.required,
       ]),
+      address1: new FormControl(''),
+      address2: new FormControl(''),
+      company1: new FormControl(''),
+      company2: new FormControl(''),
       check: new FormControl({ value: '', disabled: false }, []),
     });
   }
@@ -94,10 +100,15 @@ export class RegistrationFormComponent implements OnInit {
     this.state$ = this.dataService.getState();
     this.countries = Country.getAllCountries();
     this.states = State.getAllStates();
+    this.addressOption = ["Home", "Company"]
   }
 
   onSubmit() {
-    let obj = {
+    if (this.planForm.invalid) {
+      return;
+    }
+    
+    const obj = {
       first_name: this.planForm.value.first_name,
       last_name: this.planForm.value.last_name,
       mob_no: this.planForm.value.mob_no,
@@ -106,16 +117,23 @@ export class RegistrationFormComponent implements OnInit {
       country: this.planForm.value.country,
       state: this.planForm.value.state,
       address: this.planForm.value.address,
+      address1: this.planForm.value.address1,
+      address2: this.planForm.value.address2,
+      company1: this.planForm.value.company1,
+      company2: this.planForm.value.company2,
       tags: this.tags,
       image: this.fileimage,
       newsLetter: this.checkboxValue,
     };
+    console.log("obj",obj);
     this.data = obj;
     this.dataService.setState(this.data);
     this.router.navigate(['/profile']);
     this.onNoClick();
     this.toastr.success('Registered Successfully');
   }
+
+
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -128,6 +146,31 @@ export class RegistrationFormComponent implements OnInit {
 
   getSelectedStateValue() {}
 
+  onAddressSelectionChange(event: any) {
+     this.selectedAddress = event.value;
+    const address1Control = this.planForm.get('address1');
+    const address2Control = this.planForm.get('address2');
+    const company1Control = this.planForm.get('company1');
+    const company2Control = this.planForm.get('company2');
+  
+    if (this.selectedAddress === 'Home') {
+      address1Control?.setValidators([Validators.required]);
+      address2Control?.setValidators([Validators.required]);
+      company1Control?.clearValidators();
+      company2Control?.clearValidators();
+    } else if (this.selectedAddress === 'Company') {
+      address1Control?.clearValidators();
+      address2Control?.clearValidators();
+      company1Control?.setValidators([Validators.required]);
+      company2Control?.setValidators([Validators.required]);
+    }
+  
+    address1Control?.updateValueAndValidity();
+    address2Control?.updateValueAndValidity();
+    company1Control?.updateValueAndValidity();
+    company2Control?.updateValueAndValidity();
+  }
+  
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     this.fileimage = file;

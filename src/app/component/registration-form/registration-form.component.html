@@ -147,20 +147,35 @@
           <span class="customLabel">
             Address <span class="required">*</span>
           </span>
-          <input matInput formControlName="address" required />
+          <mat-select formControlName="address" (selectionChange)="onAddressSelectionChange($event)">
+            <mat-option *ngFor="let address of addressOption" [value]="address">
+              {{ address }}
+            </mat-option>
+          </mat-select>
           <mat-error *ngIf="planForm.get('address')?.hasError('required')">
-            Address is required</mat-error
-          >
-          <mat-error *ngIf="planForm.get('address')?.hasError('minlength')">
-            {{ patternMessage.minLength + pattern.NAMEMINLENGTH }}
-          </mat-error>
-          <mat-error *ngIf="planForm.get('address')?.hasError('maxlength')">
-            {{ patternMessage.maxLength + pattern.NAMEMAXLENGTH }}
-          </mat-error>
-          <mat-error *ngIf="planForm.get('address')?.hasError('pattern')">
-            Please enterAddress
+            Address is required
           </mat-error>
         </mat-form-field>
+        
+        <div *ngIf="selectedAddress === 'Home'">
+          <mat-form-field>
+            <input matInput placeholder="Address 1" formControlName="address1">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Address 2" formControlName="address2">
+          </mat-form-field>
+        </div>
+        
+        <div *ngIf="selectedAddress === 'Company'">
+          <mat-form-field>
+            <input matInput placeholder="Company 1" formControlName="company1">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Company 2" formControlName="company2">
+          </mat-form-field>
+        </div>
+        
+        
       </div>
     </div>
 

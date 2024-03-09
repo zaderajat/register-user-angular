@@ -40,6 +40,7 @@ export class EditDialogComponent implements OnInit {
   public isAvailable$ = new BehaviorSubject<boolean>(false);
   public state$: Observable<Data> | undefined;
   planForm: FormGroup;
+  selectedAddress: string | undefined;
   countries: any;
   states: any;
   selectedImage: string | ArrayBuffer | null = null;
@@ -48,6 +49,7 @@ export class EditDialogComponent implements OnInit {
   checkboxValue: boolean = false;
   data: any;
   formData: any;
+  addressOption: any = [];
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
@@ -57,7 +59,6 @@ export class EditDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data1: any
   ) {
     this.formData = data1;
-
     this.planForm = fb.group({
       first_name: new FormControl({ value: '', disabled: false }, [
         Validators.required,
@@ -92,11 +93,18 @@ export class EditDialogComponent implements OnInit {
       address: new FormControl({ value: '', disabled: false }, [
         Validators.required,
       ]),
+      address1: [''],
+      address2: [''],
+      company1: [''],
+      company2: [''],
       check: new FormControl({ value: '', disabled: false }, []),
     });
   }
 
   ngOnInit(): void {
+    this.addressOption = ["Home", "Company"];
+    this.selectedAddress = this.formData.address || '';
+    this.validateRequiredFields();
     this.state$ = this.dataService.getState();
     this.countries = Country.getAllCountries();
     this.states = State.getAllStates();
@@ -108,14 +116,51 @@ export class EditDialogComponent implements OnInit {
       state: this.formData.state,
       country: this.formData.country,
       address: this.formData.address,
+      address1: this.formData.address1,
+      address2: this.formData.address2,
+      company1: this.formData.company1,
+      company2: this.formData.company2,
     });
     this.valorFinal = this.formData.age;
-    this.formData.tags.map((ele: any) => {
+    this.formData?.tags?.map((ele: any) => {
       this.tags.push(ele);
     });
   }
 
+  validateRequiredFields() {
+    const address1Control = this.planForm.get('address1');
+    const address2Control = this.planForm.get('address2');
+    const company1Control = this.planForm.get('company1');
+    const company2Control = this.planForm.get('company2');
+  
+    if (this.selectedAddress === 'Home') {
+      address1Control?.setValidators([Validators.required]);
+      address2Control?.setValidators([Validators.required]);
+      company1Control?.clearValidators();
+      company2Control?.clearValidators();
+    } else if (this.selectedAddress === 'Company') {
+      address1Control?.clearValidators();
+      address2Control?.clearValidators();
+      company1Control?.setValidators([Validators.required]);
+      company2Control?.setValidators([Validators.required]);
+    }
+  
+    address1Control?.updateValueAndValidity();
+    address2Control?.updateValueAndValidity();
+    company1Control?.updateValueAndValidity();
+    company2Control?.updateValueAndValidity();
+  }  
+
+  onAddressSelectionChange(event: any) {
+    this.selectedAddress = event.value;
+    this.validateRequiredFields();
+ }
+
   onSubmit() {
+    if (this.planForm.invalid) {
+      return;
+    }
+
     let obj = {
       first_name: this.planForm.value.first_name,
       last_name: this.planForm.value.last_name,
@@ -125,17 +170,22 @@ export class EditDialogComponent implements OnInit {
       country: this.planForm.value.country,
       state: this.planForm.value.state,
       address: this.planForm.value.address,
+      address1: this.planForm.value.address1,
+      address2: this.planForm.value.address2,
+      company1: this.planForm.value.company1,
+      company2: this.planForm.value.company2,
       tags: this.tags,
       image: this.formData.image,
       newsLetter: this.checkboxValue,
     };
-    this.data = obj;
 
+    this.data = obj;
     this.dataService.setState(this.data);
     this.router.navigate(['/profile']);
     this.onNoClick();
     this.toastr.success('Profile updated successfully');
   }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
