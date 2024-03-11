@@ -107,6 +107,11 @@ export class RegistrationFormComponent implements OnInit {
     if (this.planForm.invalid) {
       return;
     }
+
+    if (!this.selectedImage || this.invalidImageSize) {
+    this.toastr.error('Please check your profile size and selected or not');
+      return;
+    }
     
     const obj = {
       first_name: this.planForm.value.first_name,
@@ -131,7 +136,8 @@ export class RegistrationFormComponent implements OnInit {
     this.router.navigate(['/profile']);
     this.onNoClick();
     this.toastr.success('Registered Successfully');
-  }
+}
+
 
 
   onNoClick(): void {
